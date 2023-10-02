@@ -43,7 +43,7 @@ export default function Navbar({ isAuth }) {
           <li>
             <Link
               to={"/logout"}
-              className="transition duration-300 ease-in-out hover:text-white flex items-center"
+              className="text-red-600 transition duration-300 ease-in-out hover:text-white flex items-center"
             >
               <AiOutlineLogout size={20} className="mr-1" />
               Logout

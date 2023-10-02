@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -24,13 +24,17 @@ export default function CreatePost() {
       return;
     }
 
-    await addDoc(collection(db, "posts"), {
+    const result = await addDoc(collection(db, "posts"), {
       title,
       postText: text,
       author: {
-        username: auth.currentUser.displayName,
-        id: auth.currentUser.uid,
+        userName: auth.currentUser.displayName,
+        userId: auth.currentUser.uid,
       },
+    });
+
+    await updateDoc(doc(db, "posts", result.id), {
+      id: result.id,
     });
 
     setTitle("");
@@ -69,7 +73,7 @@ export default function CreatePost() {
         </div>
         <button
           type="submit"
-          className="w-full px-2 py-1 text-white border bg-blue-500 transition duration-200 ease-in-out hover:bg-blue-600"
+          className="w-full px-2 py-1 text-white bg-blue-500 transition duration-200 ease-in-out hover:bg-blue-600"
         >
           게시하기
         </button>
